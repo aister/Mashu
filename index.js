@@ -44,8 +44,7 @@ bot.on('message', (message) => {
     args2 = content.match(/"[^"]+"/g);
     if (args2) {
       args2 = args2[0].slice(1, -1);
-      content = content.match(/^[^"]*"/g)[0].slice(-1) + content.match(/"[^"]*$/g)[0].slice(1);
-      console.log(content);
+      content = content.match(/^[^"]*"/g)[0].slice(0, -1) + content.match(/"[^"]*$/g)[0].slice(1);
     } else args2 = false;
     if (args.length) args = args.join(" ").trim();
     else args = false;
@@ -112,6 +111,70 @@ bot.on('message', (message) => {
       }
     } else if (content.match(/\brepeat\b/g)) {
       if (args2) message.send(args2);
+    } else if (content.match(/\bservant info\b/g)) {
+      if (args2) {
+        if (args2.startsWith('id:')) args2 = "http://aister.site90.com/api.php?mode=servants&c=dataID&query=" + encodeURI(args2.slice(3));
+        else args2 = "http://aister.site90.com/api.php?mode=servants&c=name&query=" + encodeURI(args2);
+        message.send("Surely, senpai, please wait a moment");
+        request({ url: args2, json: true, followRedirect: false }, function(err, res, body) {
+          if (res.statusCode != 302 && body.item) {
+            body = body.item;
+            attack = body.attacks.replace(/.{2}/g, function (match) {
+              switch (match) {
+                case "01": return "Quick, ";
+                case "02": return "Arts, ";
+                case "03": return "Buster, ";
+              }
+            }).slice(0, -2);
+            field = [
+              {
+                name: "Class",
+                value: body.class,
+                inline: true
+              },
+              {
+                name: "Cost",
+                value: body.cost,
+                inline: true
+              },
+              {
+                name: "HP",
+                value: body.baseHP + ' (' + body.maxHP + ')',
+                inline: true
+              },
+              {
+                name: "ATK",
+                value: body.baseATK + ' (' + body.maxATK + ')',
+                inline: true
+              },
+              {
+                name: "Attacks",
+                value: attack
+              },
+              {
+                name: "Description",
+                value: body.description
+              }
+            ];
+            if (body.note && body.note != ' ') {
+              field.push({
+                name: 'Note',
+                value: body.note
+              });
+            }
+            servant = {
+              title: body.name + ' (ID: ' + body.dataID + ')',
+              color: 0xff0000,
+              fields: field,
+              thumbnail: {
+                url: body.image
+              },
+              url: body.link
+            }
+            message.channel.sendMessage('', { embed: servant });
+          } else message.send("I'm sorry, senpai, I couldn't find anything at all")
+        });
+      }
     } else if (content.match(/\btime\b/g)) {
       var date = new Date();
       if (content.match(/\bcurrent\b/g)) {

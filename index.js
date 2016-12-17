@@ -11,7 +11,7 @@ var timer = {};
 for (var item in tzOffset) {
   regex.push(item);
 }
-regex = new RegExp(regex.join("|"), "g");
+regex = new RegExp(regex.join("|") + "|GMT[+-]\\d\\d?", "g");
 bot.on('message', (message) => {
   if (message.author.bot) return;
   embed = {

@@ -42,8 +42,11 @@ bot.on('message', (message) => {
     args = content.slice(1);
     content = content[0];
     args2 = content.match(/"[^"]+"/g);
-    if (args2) args2 = args2[0].slice(1, -1);
-    else args2 = false;
+    if (args2) {
+      args2 = args2[0].slice(1, -1);
+      content = content.match(/^[^"]*"/g)[0].slice(-1) + content.match(/"[^"]*$/g)[0].slice(1);
+      console.log(content);
+    } else args2 = false;
     if (args.length) args = args.join(" ").trim();
     else args = false;
     if (content.match(/\bu there\b/g)) {

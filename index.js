@@ -176,10 +176,10 @@ bot.on('message', (message) => {
           } else message.send("I'm sorry, senpai, I couldn't find anything at all")
         });
       }
-    } else if (content.match(/\bcommands\b/g)) {
-      message.send("If you need my command list, please read this [https://github.com/aister/Mashu/raw/master/README.md](LINK), senpai")
+    } else if (content.match(/\bcommands?\b/g)) {
+      message.send("If you need my command list, please read this [LINK](https://github.com/aister/Mashu/raw/master/README.md), senpai")
     } else if (content.match(/\binvite\b/g)) {
-      message.send("Please use this [https://discordapp.com/oauth2/authorize?client_id=218739168354762753&scope=bot](LINK) to invite me to your server, senpai");
+      message.send("Please use this [LINK](https://discordapp.com/oauth2/authorize?client_id=218739168354762753&scope=bot) to invite me to your server, senpai");
     } else if (content.match(/\btime\b/g)) {
       var date = new Date();
       localTZ = Math.floor(date.getTimezoneOffset() / 60);

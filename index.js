@@ -11,7 +11,7 @@ var timer = {};
 for (var item in tzOffset) {
   regex.push(item);
 }
-regex = new RegExp(regex.join("|") + "|GMT[+-]\\d\\d?|UTC[+-]\\d\\d?", "g");
+regex = new RegExp(regex.join("|") + "|gmt[+-]\\d\\d?|utc[+-]\\d\\d?", "g");
 bot.on('message', (message) => {
   if (message.author.bot) return;
   embed = {
@@ -201,6 +201,9 @@ bot.on('message', (message) => {
         match = match[0];
         h = parseInt(match.slice(0, 2));
         m = match.slice(3);
+        console.log(content);
+        console.log(regex);
+        console.log(content.match(regex));
         if (tz = content.match(regex)) {
           tz = tz[0];
           if (tzOffset[tz]) offset = tzOffset[tz];

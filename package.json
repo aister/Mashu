@@ -1,0 +1,23 @@
+{
+  "name": "mashubot",
+  "version": "1.0.0",
+  "description": "A discord bot",
+  "engines": {
+    "node": "6.5.0",
+    "npm": "3.10.6"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "discord.js": "hydrabolt/discord.js#indev",
+    "request": "^2.79.0"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
+}

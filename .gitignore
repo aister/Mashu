@@ -1,0 +1,5 @@
+*.bak
+node_modules
+config.json
+*.tmp
+*.bat

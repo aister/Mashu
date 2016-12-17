@@ -11,13 +11,13 @@ var timer = {};
 for (var item in tzOffset) {
   regex.push(item);
 }
-regex = new RegExp(regex.join("|") + "|GMT[+-]\\d\\d?", "g");
+regex = new RegExp(regex.join("|") + "|GMT[+-]\\d\\d?|UTC[+-]\\d\\d?", "g");
 bot.on('message', (message) => {
   if (message.author.bot) return;
   embed = {
     color: 0x683b62
   };
-  message.content = message.content.toLowerCase();
+  content = message.content.toLowerCase();
   reply = false;
   message.send = function (desc, emotion) {
     desc = desc.slice(0, 1).toUpperCase() + desc.slice(1);
@@ -27,14 +27,14 @@ bot.on('message', (message) => {
     this.channel.sendMessage("", { embed });
     reply = true;
   }
-  if (!message.content.startsWith("mashu, ")) {
-    if (["thx mashu", "thanks mashu", "thank you mashu"].includes(message.content)) {
+  if (!content.startsWith("mashu, ")) {
+    if (content.match(/thx,? mashu|thanks,? mashu|thank you,? mashu/g)) {
       message.send("You're welcome senpai.");
-    } else if (message.content.includes("it's ok mashu")) {
+    } else if (content.match(/it's ok,? mashu/g)) {
       message.send("I'll try better next time, senpai");
-    } else if (message.content.match(/\bright,? mashu\b/g)) {
+    } else if (content.match(/\bright,? mashu\b/g)) {
       message.send("Yes, senpai.");
-    } else if (["good job, mashu", "good job mashu", "gj mashu", "nice, mashu"].includes(message.content)) {
+    } else if (content.match(/good job,? mashu|gj,? mashu|nice,? mashu/g)) {
       message.send("Thank you senpai. I will try my best!", "embarassed");
     }
   } else {
@@ -48,6 +48,7 @@ bot.on('message', (message) => {
     } else args2 = false;
     if (args.length) args = args.join(" ").trim();
     else args = false;
+    content = content.toLowerCase();
     if (content.match(/\bu there\b/g)) {
       message.send("Yes senpai. I'm here.");
     } else if (content.match(/\beval\b/g) && message.author.id == "184369428002111488") {
@@ -175,8 +176,13 @@ bot.on('message', (message) => {
           } else message.send("I'm sorry, senpai, I couldn't find anything at all")
         });
       }
+    } else if (content.match(/\bcommands\b/g)) {
+      message.send("If you need my command list, please read this [https://github.com/aister/Mashu/raw/master/README.md](LINK), senpai")
+    } else if (content.match(/\binvite\b/g)) {
+      message.send("Please use this [https://discordapp.com/oauth2/authorize?client_id=218739168354762753&scope=bot](LINK) to invite me to your server, senpai");
     } else if (content.match(/\btime\b/g)) {
       var date = new Date();
+      localTZ = Math.floor(date.getTimezoneOffset() / 60);
       if (content.match(/\bcurrent\b/g)) {
         if (match = content.match(regex)) {
           if (tzOffset[match[0]]) offset = tzOffset[match[0]];
@@ -204,15 +210,15 @@ bot.on('message', (message) => {
           } else {
             if (content.startsWith("what") || content.startsWith("wat")) {
               if (content.indexOf(tz) < content.indexOf('local')) {
-                h = offset - 7 + h;
+                h = offset - localTZ + h;
               } else {
-                h = h - offset + 7;
+                h = h - offset + localTZ;
               }
             } else {
               if (content.indexOf(tz) > content.indexOf('local')) {
-                h = offset - 7 + h;
+                h = offset - localTZ + h;
               } else {
-                h = h - offset + 7;
+                h = h - offset + localTZ;
               }
             }
             info = tz.toUpperCase();

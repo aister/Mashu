@@ -1,8 +1,15 @@
 var Discord = require("discord.js");
 var util = require('util');
 var request = require('request');
-if (!process.env.MashuBot) token = require('./config.json').token;
-else token = process.env.MashuBot;
+if (!process.env.MashuBot) {
+  token = require('./config.json');
+  apiai = token.apiai;
+  token = token.token;
+}
+else {
+  token = process.env.MashuBot;
+  apiai = process.env.ApiAi;
+}
 bot = new Discord.Client();
 var tzOffset = {"pst": -8,"pdt": -7,"est": -5,"edt": -4,"jst": 9,"dst": 1}
 var emote = { "default": "http://i.imgur.com/gahpkzl.png", "serious": "http://i.imgur.com/a30T4gX.png", "embarassed": "http://i.imgur.com/BcjWzGc.png" }
@@ -14,6 +21,8 @@ for (var item in tzOffset) {
 regex = new RegExp(regex.join("|") + "|gmt[+-]\\d\\d?|utc[+-]\\d\\d?", "g");
 bot.on('message', (message) => {
   if (message.author.bot) return;
+  if (message.member && message.member.nickname) name = message.member.nickname;
+  else name = message.author.username;
   embed = {
     color: 0x683b62
   };
@@ -29,13 +38,13 @@ bot.on('message', (message) => {
   }
   if (!content.startsWith("mashu, ")) {
     if (content.match(/thx,? mashu|thanks,? mashu|thank you,? mashu/g)) {
-      message.send("You're welcome senpai.");
+      message.send("You're welcome " + name + "-senpai.");
     } else if (content.match(/it's ok,? mashu/g)) {
-      message.send("I'll try better next time, senpai");
+      message.send("I'll try better next time, " + name + "-senpai");
     } else if (content.match(/\bright,? mashu\b/g)) {
-      message.send("Yes, senpai.");
+      message.send("Yes, " + name + "-senpai.");
     } else if (content.match(/good job,? mashu|gj,? mashu|nice,? mashu/g)) {
-      message.send("Thank you senpai. I will try my best!", "embarassed");
+      message.send("Thank you " + name + "-senpai. I will try my best!", "embarassed");
     }
   } else {
     content = message.content.slice(7).split('\n');
@@ -49,8 +58,8 @@ bot.on('message', (message) => {
     if (args.length) args = args.join(" ").trim();
     else args = false;
     content = content.toLowerCase();
-    if (content.match(/\bu there\b/g)) {
-      message.send("Yes senpai. I'm here.");
+    if (content.match(/\by?o?u there\b/g)) {
+      message.send("Yes " + name + "-senpai. I'm here.");
     } else if (content.match(/\beval\b/g) && message.author.id == "184369428002111488") {
       if (args) {
         try {
@@ -60,24 +69,24 @@ bot.on('message', (message) => {
             reg = new RegExp(bot.token.replace(/\./g, "\\.") + '|' + bot.email.replace(/\./g, "\\.") + '|' + bot.password.replace(/\./g, "\\."), 'g');
             args = args.replace(reg, 'Removed');
           }
-          message.send("Of course senpai, here it is:\n```js\n" + args + "\n```");
+          message.send("Of course " + name + "-senpai, here it is:\n```js\n" + args + "\n```");
         } catch(err) {
-          message.send("Senpai, there's an error in your code: \n```js\n" + err + "\n```", "serious");
+          message.send("" + name + "-senpai, there's an error in your code: \n```js\n" + err + "\n```", "serious");
         }
       } else {
-        message.send("Senpai, how do you expect me to eval when there's no code?", "serious");
+        message.send("" + name + "-senpai, how do you expect me to eval when there's no code?", "serious");
       }
     } else if (content.match(/\bnote\b/g) && message.author.id == "184369428002111488") {
       if (args2) {
-        message.send("Surely senpai, I will take note for you. The note is:\n\n" + args2);
+        message.send("Surely " + name + "-senpai, I will take note for you. The note is:\n\n" + args2);
         bot.channels.get("222555996994666496").sendMessage(args2);
       } else {
-        message.send("Senpai, there's nothing to note. Oh I understand, there's noteing to note, right? Huh? No? OK then...");
+        message.send("" + name + "-senpai, there's nothing to note. Oh I understand, there's noteing to note, right? Huh? No? OK then...");
       }
     } else if (content.match(/\btimer\b/g)) {
       if (content.match(/\bstart\b/g)) {
         timer[message.author.id] = Date.now();
-        message.send("Roger! The timer[message.author.id] has started! Good luck, senpai!");
+        message.send("Roger! The timer has started! Good luck, " + name + "-senpai!");
       } else if (content.match(/\bstop\b/g)) {
         if (timer[message.author.id]) {
           timer[message.author.id] = Date.now() - timer[message.author.id];
@@ -91,13 +100,14 @@ bot.on('message', (message) => {
           if (s < 10) s = "0" + s;
           timer[message.author.id] = timer[message.author.id] % 1000;
           if (timer[message.author.id] < 10) timer[message.author.id] = "0" + timer[message.author.id];
-          message.send("The timer has stopped! The screen says " + h + ":" + m + ":" + s + "." + timer[message.author.id] + ", senpai!");
+          message.send("The timer has stopped! The screen says " + h + ":" + m + ":" + s + "." + timer[message.author.id] + ", " + name + "-senpai!");
           delete timer[message.author.id];
         }
       }
     } else if (content.match(/\bsearch\b/g)) {
       if (args2) {
         reply = true;
+        message.channel.startTyping();
         request('https://www.google.com/search?safe=active&q=' + encodeURI(args2), function(err, res, body) {
           if (err) console.log(err);
           else {
@@ -105,8 +115,9 @@ bot.on('message', (message) => {
               body = body.slice(body.indexOf('/url?q=') + 7);
               body = body.slice(0, body.indexOf('&'));
               body = decodeURIComponent(body);
-              message.send("Senpai, I found this website. I hope this is what you are looking for.\n" + body);
-            } else message.send("Sorry senpai, I couldn't find anything");
+              message.send("" + name + "-senpai, I found this website. I hope this is what you are looking for.\n" + body);
+            } else message.send("Sorry " + name + "-senpai, I couldn't find anything");
+            message.channel.stopTyping();
           }
         });
       }
@@ -116,9 +127,11 @@ bot.on('message', (message) => {
       if (args2) {
         if (args2.startsWith('id:')) args2 = "http://aister.site90.com/api.php?mode=servants&c=dataID&query=" + encodeURI(args2.slice(3));
         else args2 = "http://aister.site90.com/api.php?mode=servants&c=name&query=" + encodeURI(args2);
-        message.send("Surely, senpai, please wait a moment");
+        message.channel.startTyping();
+        message.send("Surely, " + name + "-senpai, please wait a moment");
         request({ url: args2, json: true, followRedirect: false }, function(err, res, body) {
           if (res.statusCode != 302 && body.item) {
+            message.channel.stopTyping();
             body = body.item;
             attack = body.attacks.replace(/.{2}/g, function (match) {
               switch (match) {
@@ -173,43 +186,40 @@ bot.on('message', (message) => {
               url: body.link
             }
             message.channel.sendMessage('', { embed: servant });
-          } else message.send("I'm sorry, senpai, I couldn't find anything at all")
+          } else message.send("I'm sorry, " + name + "-senpai, I couldn't find anything at all")
         });
       }
     } else if (content.match(/\bcommands?\b/g)) {
-      message.send("If you need my command list, please read this [LINK](https://github.com/aister/Mashu/raw/master/README.md), senpai")
+      message.send("If you need my command list, please read this [LINK](https://github.com/aister/Mashu/blob/master/README.md), " + name + "-senpai")
     } else if (content.match(/\binvite\b/g)) {
-      message.send("Please use this [LINK](https://discordapp.com/oauth2/authorize?client_id=218739168354762753&scope=bot) to invite me to your server, senpai");
+      message.send("Please use this [LINK](https://discordapp.com/oauth2/authorize?client_id=259634602199482368&scope=bot) to invite me to your server, " + name + "-senpai");
     } else if (content.match(/\btime\b/g)) {
       var date = new Date();
-      localTZ = Math.floor(date.getTimezoneOffset() / 60);
+      localTZ = Math.floor(date.getTimezoneOffset() / 60) * -1;
       if (content.match(/\bcurrent\b/g)) {
         if (match = content.match(regex)) {
           if (tzOffset[match[0]]) offset = tzOffset[match[0]];
           else offset = parseInt(match[0].slice(3));
           if (offset < -11 || offset > 12) {
-            message.send("Senpai, that timezone is invalid!", "serious");
+            message.send("" + name + "-senpai, that timezone is invalid!", "serious");
           } else {
             offset = offset * 60 * 60 * 1000;
             date.setTime( date.getTime() + offset );
-            message.send("Senpai, the current time in " + match[0].toUpperCase() + " is " + date.toUTCString().slice(0, -3));
+            message.send("" + name + "-senpai, the current time in " + match[0].toUpperCase() + " is " + date.toUTCString().slice(0, -3));
           }
         } else {
-          message.send("Senpai, the current local time is " + date.toLocaleString());
+          message.send("" + name + "-senpai, the current local time is " + date.toLocaleString());
         }
       } else if (match = content.match(/\d\d:\d\d/g)) {
         match = match[0];
         h = parseInt(match.slice(0, 2));
         m = match.slice(3);
-        console.log(content);
-        console.log(regex);
-        console.log(content.match(regex));
         if (tz = content.match(regex)) {
           tz = tz[0];
           if (tzOffset[tz]) offset = tzOffset[tz];
           else offset = parseInt(tz.slice(3));
           if (offset < -11 || offset > 12) {
-            message.send("Senpai, that timezone is invalid!", "serious");
+            message.send("" + name + "-senpai, that timezone is invalid!", "serious");
           } else {
             if (content.startsWith("what") || content.startsWith("wat")) {
               if (content.indexOf(tz) < content.indexOf('local')) {
@@ -235,13 +245,24 @@ bot.on('message', (message) => {
               info += " in the same day";
             }
             if (h < 10) h = "0" + h;
-            message.send("It will be " + h + ":" + m + " at " + info + ", senpai.");
+            message.send("It will be " + h + ":" + m + " at " + info + ", " + name + "-senpai.");
           }
         }
       }
     }
     if (!reply) {
-      message.send("Sorry senpai, I don't understand what you're saying at all...");
+      message.channel.startTyping();
+      request({
+        url: "https://api.api.ai/v1/query?lang=en&v=20150910&sessionId=be040598-37cd-4021-8ac7-706376544306&query=" + encodeURI(message.content.slice(7)),
+              json: true,
+              headers: {
+                'Authorization': 'Bearer ' + apiai
+              }
+      }, function(err, res, body) {
+        if (err) console.log(err);
+        else message.send(body.result.fulfillment.speech);
+        message.channel.stopTyping();
+      });
     }
   }
 });

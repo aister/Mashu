@@ -66,7 +66,7 @@ bot.on('message', (message) => {
           args = eval(args);
           if (typeof args == "object") args = util.inspect(args, {depth: 0});
           if (typeof args == "string") {
-            reg = new RegExp(bot.token.replace(/\./g, "\\.") + '|' + bot.email.replace(/\./g, "\\.") + '|' + bot.password.replace(/\./g, "\\."), 'g');
+            reg = new RegExp(bot.token.replace(/\./g, "\\."), 'g');
             args = args.replace(reg, 'Removed');
           }
           message.send("Of course " + name + "-senpai, here it is:\n```js\n" + args + "\n```");

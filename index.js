@@ -260,7 +260,7 @@ bot.on('message', (message) => {
               }
       }, function(err, res, body) {
         if (err) console.log(err);
-        else message.send(body.result.fulfillment.speech);
+        else message.send(body.result.fulfillment.speech.replace(/senpai/gi, name + '-senpai'));
         message.channel.stopTyping();
       });
     }

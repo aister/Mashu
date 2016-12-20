@@ -130,8 +130,8 @@ bot.on('message', (message) => {
         message.channel.startTyping();
         message.send("Surely, " + name + "-senpai, please wait a moment");
         request({ url: args2, json: true, followRedirect: false }, function(err, res, body) {
+          message.channel.stopTyping();
           if (res.statusCode != 302 && body.item) {
-            message.channel.stopTyping();
             body = body.item;
             attack = body.attacks.replace(/.{2}/g, function (match) {
               switch (match) {
@@ -167,7 +167,7 @@ bot.on('message', (message) => {
               },
               {
                 name: "Description",
-                value: body.description
+                value: body.description.replace(/<br>/g, '\n')
               }
             ];
             if (body.note && body.note != ' ') {

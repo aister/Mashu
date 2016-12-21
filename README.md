@@ -3,6 +3,8 @@ MashuBot is an open source discord bot made in Node.js. This bot was made as an 
 
 For bot support, or suggestion, please join [Our Discord server](http://discord.gg/VcYEefZ)
 
+Thanks to Paiko Shi for the emotion edits!
+
 ## Command List
 MashuBot's prefix is `mashu,` (case-insensitive) and should be included at the start of every messages if you want mashu to respond. Some other "commands" which doesn't use the prefixes will be listed under [Special Commands](#special).
 
@@ -49,9 +51,23 @@ This will have 2 modes:
 - Time conversion: the message shouldn't have **current** in the content, but provide a hh:mm format time instead. This will convert time from a timezone to local, or local to timezone. From timezone to timezone isn't yet supported
 - **NOTE:** Currently we only support PST / PDT, EST / EDT, DST and GMT/UTC-type timezone.
 
+### Twitter
+Grab the updates from FGO English Twitter. At the moment, this will have 2 modes:
+- Get pinned post: the message should have **pinned** or **pin** in the content. The bot will give you the link to the pinned post.
+- Get latest post: the message shouldn't have **pinned** or **pin** in the content. The bot will get the latest post, ignoring the pinned post if there's any.
+
+### Translate
+Translate from any language (that Google Translate supported) into English, the part that needs translating should be put inside the quotation marks.
+
+### Stat
+Give a overview of the stat of the bot, how much memory it is using, and other stats as well.
+
 ## Special Commands
 These "commands" doesn't use the prefix, and are put in the bot in order to give the bot some sort of pseudo-personality.
 - messages with the content including `thx mashu`, `thanks mashu` or `thank you mashu` will make Mashu say "you're welcome"
 - messages with the content including `it's ok, mashu` will make Mashu say "I'll try better next time"
 - messages with the content including `right, mashu` will make Mashu agreeing with you
 - messages with the content including `good job mashu`, `gj mashu` or `nice, mashu` will make Mashu blush and say thanks
+
+## Other
+Messages that started with the prefix, but didn't fall into any categories above, will also be replied with an AI-ish response. However as the bot is still new and there might be errors in the way it detects and inteprets intentions, the replies might not make sense sometimes :P

@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "discord.js": "hydrabolt/discord.js#indev",
-    "request": "^2.79.0"
+    "request": "^2.79.0",
+    "google-translate-api": "^2.2.2"
   },
   "keywords": [
     "node",

@@ -259,6 +259,20 @@ bot.on('message', (message) => {
       }
     } else if (content.match(/\bcommands?\b/g)) {
       message.send("If you need my command list, please read this [LINK](https://github.com/aister/Mashu/blob/master/README.md), senpai")
+    } else if (content.match(/\bselfie\b/g)) {
+      message.send("Surely, senpai, please wait a moment");
+      selfie = embed;
+      request({
+        url: 'https://safebooru.donmai.us/posts.json?random=true&limit=1&tags=shielder_%28fate%2Fgrand_order%29',
+        json: true
+      }, function (err, temp, body) {
+        if (!err && body.length > 0 && body[0].file_url) {
+          selfie.image = { url: "https://safebooru.donmai.us/" + body[0].file_url };
+          selfie.description = "Here you go senpai";
+          selfie.thumbnail = { url: emote.embarassed };
+          message.channel.sendMessage("", { embed: selfie });
+        } else message.send("I'm sorry senpai, the camera is broken");
+      });
     } else if (content.match(/\binvite\b/g)) {
       message.send("Please use this [LINK](https://discordapp.com/oauth2/authorize?client_id=259634602199482368&scope=bot) to invite me to your server, senpai");
     } else if (content.match(/\btime\b/g)) {
@@ -321,7 +335,7 @@ bot.on('message', (message) => {
     if (!reply) {
       message.channel.startTyping();
       request({
-        url: "https://api.api.ai/v1/query?lang=en&v=20150910&sessionId=be040598-37cd-4021-8ac7-706376544306&query=" + encodeURI(message.content.slice(7)),
+        url: "https://api.api.ai/v1/query?lang=en&v=20150910&sessionId=be040598-37cd-4021-8ac7-706376544306&query=" + encodeURI(message.content.slice(prefix.length)),
               json: true,
               headers: {
                 'Authorization': 'Bearer ' + apiai

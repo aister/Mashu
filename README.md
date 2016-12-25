@@ -16,6 +16,9 @@ Pretty much a ping, checking if the bot is still responding normally.
 Mashu, are you there?
 ```
 
+### Selfie
+This command will search on safebooru a picture of our beloved Mashu. Because no one has enough mashu pics, amiright?
+
 ### Timer
 This command will **start** or **stop** the timer for you. Just include in your message (along with the prefix and the command name) the word *start* to start the timer, or *stop* to stop it. For example:
 ```

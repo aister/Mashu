@@ -1,7 +1,7 @@
 module.exports = {
   exec: (client, message, content, args) => {
     temp = client.embed;
-    temp.description = "Sure " + name + "-senpai, here is my stat:";
+    temp.description = "Sure " + client.name + "-senpai, here is my stat:";
     temp.fields = [
       {
         name: "Bot uptime",

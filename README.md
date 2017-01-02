@@ -48,10 +48,13 @@ Mashu, what is the servant info for "id:001.5"?
 ### Invite
 This command will give you the invite link that you can use to invite the bot to your server
 
+### Daily
+This command will give you the daily quest info of the current date in Japan
+
 ### Time
 This will have 2 modes:
-- Current time: the message should have **current** in the content. It will give you the current local time, or the current local time of the provided timezone.
-- Time conversion: the message shouldn't have **current** in the content, but provide a hh:mm format time instead. This will convert time from a timezone to local, or local to timezone. From timezone to timezone isn't yet supported
+- Current time: the message shouldn't have any hh:mm time format in the content. It will give you the current local time, or the current time of the provided timezone.
+- Time conversion: the message should provide a hh:mm time format in the content. This will convert time from a timezone to local, or local to timezone, or from timezone to timezone.
 - **NOTE:** Currently we only support PST / PDT, EST / EDT, DST and GMT/UTC-type timezone.
 
 ### Twitter

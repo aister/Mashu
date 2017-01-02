@@ -63,12 +63,12 @@ client.load(client, () => {
     }
 
     client.reply = false;
-    let name = message.author.username;
-    if (message.member && message.member.nickname) name = message.member.nickname;
+    client.name = message.author.username;
+    if (message.member && message.member.nickname) client.name = message.member.nickname;
     message.send = function (desc, emotion) {
       embed = client.embed;
       desc = desc.slice(0, 1).toUpperCase() + desc.slice(1);
-      embed.description = desc.replace(/senpai/gi, name + '-senpai');
+      embed.description = desc.replace(/senpai/gi, client.name + '-senpai');
       if (emotion) embed.thumbnail = { url: client.emote[emotion] };
       else {
         if (Math.random() > 0.5) embed.thumbnail = { url: client.emote["default"] };

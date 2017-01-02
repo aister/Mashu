@@ -48,7 +48,7 @@ Mashu, what is the servant info for "id:001.5"?
 ### Invite
 This command will give you the invite link that you can use to invite the bot to your server
 
-### Daily
+### Daily Quest
 This command will give you the daily quest info of the current date in Japan
 
 ### Time

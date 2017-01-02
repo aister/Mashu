@@ -22,8 +22,8 @@ module.exports = {
           fields,
           description: "\u200b"
         }
-        message.channel.sendMessage('', {embed}).then(callback).catch(console.log);
-      } else message.channel.sendMessage("Not found").then(callback);
+        message.channel.sendMessage('', {embed});
+      } else message.send("I'm sorry senpai, I couldn't find the info");
     });
   }
 }

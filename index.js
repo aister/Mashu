@@ -36,6 +36,24 @@ client.load(client, () => {
     if (message.author.bot) return;
     if (client.selfbot && client.bot.user.id != message.author.id) return;
     content = message.content.toLowerCase();
+
+
+    client.reply = false;
+    client.name = message.author.username;
+    if (message.member && message.member.nickname) client.name = message.member.nickname;
+    message.send = function (desc, emotion) {
+      embed = client.embed;
+      desc = desc.slice(0, 1).toUpperCase() + desc.slice(1);
+      embed.description = desc.replace(/senpai/gi, client.name + '-senpai');
+      if (emotion) embed.thumbnail = { url: client.emote[emotion] };
+      else {
+        if (Math.random() > 0.5) embed.thumbnail = { url: client.emote["default"] };
+        else embed.thumbnail = { url: client.emote["smile"] };
+      }
+      this.channel.sendMessage("", { embed });
+      client.reply = true;
+    }
+    
     if (!content.startsWith(client.prefix)) {
       if (content.match(/thx,? mashu|thanks,? mashu|thank you,? mashu/g)) {
         message.send("You're welcome senpai.", "smile");
@@ -62,21 +80,6 @@ client.load(client, () => {
       }
     }
 
-    client.reply = false;
-    client.name = message.author.username;
-    if (message.member && message.member.nickname) client.name = message.member.nickname;
-    message.send = function (desc, emotion) {
-      embed = client.embed;
-      desc = desc.slice(0, 1).toUpperCase() + desc.slice(1);
-      embed.description = desc.replace(/senpai/gi, client.name + '-senpai');
-      if (emotion) embed.thumbnail = { url: client.emote[emotion] };
-      else {
-        if (Math.random() > 0.5) embed.thumbnail = { url: client.emote["default"] };
-        else embed.thumbnail = { url: client.emote["smile"] };
-      }
-      this.channel.sendMessage("", { embed });
-      client.reply = true;
-    }
     if (command = content.match(client.commandRegex)) {
       client.commands[command[0]].exec(client, message, content, args);
     }

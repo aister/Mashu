@@ -10,9 +10,13 @@ module.exports = {
       if (!err && body.length > 0 && body[0].file_url) {
         selfie.image = { url: "https://safebooru.donmai.us/" + body[0].file_url };
         selfie.description = "Here you go senpai";
-        selfie.thumbnail = { url: emote.embarassed };
+        selfie.thumbnail = { url: client.emote.embarassed };
         message.channel.sendMessage("", { embed: selfie });
-      } else message.send("I'm sorry senpai, the camera is broken");
+      } else {
+        message.send("I'm sorry senpai, the camera is broken");
+        console.log(err);
+        console.log(body);
+      }
     });
   }
 }

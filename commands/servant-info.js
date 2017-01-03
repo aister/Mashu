@@ -2,14 +2,15 @@ request = require('request');
 module.exports = {
   exec: (client, message, content, args) => {
     if (args) {
+      console.log(args);
       if (args.startsWith('id:')) args = "http://aister.site90.com/api.php?mode=servants&c=dataID&query=" + encodeURI(args.slice(3));
       else args = "http://aister.site90.com/api.php?mode=servants&c=name&query=" + encodeURI(args);
       message.channel.startTyping();
       message.send("Surely, senpai, please wait a moment");
-      request({ url: args, json: true, followRedirect: false }, function(err, res, body) {
+      request({ url: args, json: true, followRedirect: false }, function(err, res, result) {
         message.channel.stopTyping();
-        if (res.statusCode != 302 && body.item) {
-          body = body.item;
+        if (res.statusCode != 302 && result.item) {
+          body = result.item;
           attack = body.attacks.replace(/.{2}/g, function (match) {
             switch (match) {
               case "01": return "Quick, ";

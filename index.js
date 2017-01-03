@@ -53,7 +53,7 @@ client.load(client, () => {
       this.channel.sendMessage("", { embed });
       client.reply = true;
     }
-    
+
     if (!content.startsWith(client.prefix)) {
       if (content.match(/thx,? mashu|thanks,? mashu|thank you,? mashu/g)) {
         message.send("You're welcome senpai.", "smile");
@@ -70,7 +70,7 @@ client.load(client, () => {
     temp = content.split('"');
     args = false;
     if (temp.length > 2) {
-      args = temp.splice(1, 1);
+      args = temp.splice(1, 1)[0];
       content = temp.join('"');
     } else {
       temp = content.split('\n');

@@ -1,3 +1,4 @@
+let timer = {};
 module.exports = {
   exec: (client, message, content, args) => {
     if (content.match(/\bstart\b/g)) {

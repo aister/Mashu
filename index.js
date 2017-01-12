@@ -18,6 +18,7 @@ else {
   client.selfbot = false;
 }
 client.load = require('./load.js');
+client.db = require('redis').createClient(process.env.REDIS_URL);
 time = Date.now();
 client.load(client, () => {
   taken = Date.now() - time;
@@ -30,6 +31,12 @@ client.load(client, () => {
   client.bot.on('disconnect', () => {
     time = Date.now();
   })
+  client.bot.on('guildCreate', () => {
+    if (!client.selfbot && (channel = client.bot.channels.get('265147163321958400'))) channel.sendMessage(client.bot.user.username + " has been added to another guild! Total guild count: " + client.bot.guilds.size);
+  });
+  client.bot.on('guildDelete', () => {
+    if (!client.selfbot && (channel = client.bot.channels.get('265147163321958400'))) channel.sendMessage(client.bot.user.username + " has been removed from a guild! Total guild count: " + client.bot.guilds.size);
+  });
   client.bot.login(client.token).catch(console.log);
   client.bot.on('message', (message) => {
 
@@ -66,7 +73,7 @@ client.load(client, () => {
       }
       return;
     }
-    content = content.slice(client.prefix.length);
+    content = message.content.slice(client.prefix.length);
     temp = content.split('"');
     args = false;
     if (temp.length > 2) {
@@ -79,8 +86,9 @@ client.load(client, () => {
         content = temp[0]; 
       }
     }
-
+    content = content.toLowerCase();
     if (command = content.match(client.commandRegex)) {
+      client.commands[command[0]].count++;
       client.commands[command[0]].exec(client, message, content, args);
     }
     if (!client.reply) {
@@ -93,7 +101,8 @@ client.load(client, () => {
               }
       }, function(err, res, body) {
         if (err) console.log(err);
-        else message.send(body.result.fulfillment.speech, body.result.action);
+        else if (body.result.action) message.send(body.result.fulfillment.speech, body.result.action);
+        else message.send(body.result.fulfillment.speech);
         message.channel.stopTyping();
       });
 

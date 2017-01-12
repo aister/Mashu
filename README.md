@@ -10,6 +10,22 @@ MashuBot's prefix is `mashu,` (case-insensitive) and should be included at the s
 
 All the commands are case-insensitive
 
+- [You there?](#you-there)
+- [Selfie](#selfie)
+- [Timer](#timer)
+- [Search](#search)
+- [Repeat](#repeat)
+- [My Profile](#my-profile)
+- [Servant Info](#servant-info)
+- [Invite](#invite)
+- [Daily Quest](#daily-quest)
+- [Master Quest](#master-quest)
+- [Time](#time)
+- [Twitter](#twitter)
+- [Translate](#translate)
+- [Stat](#stat)
+
+
 ### You there?
 Pretty much a ping, checking if the bot is still responding normally.
 ```
@@ -38,6 +54,19 @@ Mashu will repeat after you. She's a nice girl, isn't she? Don't force her to sa
 Mashu, repeat after me: "Aister is my one and only Master"
 ```
 
+### My Profile
+Mashu will retrieve your FGO profile for you. If you include a photo and / or an argument (wrapped in quotation mark) in the following format, Mashu will edit the profile for you.
+
+**Argument format:**
+```
+name: <Your IGN> | id: <Your friend ID>
+```
+**Usage Example:**
+```
+mashu, give me my profile please?
+mashu, edit my profile with "name: AisterSoPro | id: 123,456,789" please?
+```
+
 ### Servant Info
 Mashu will search for a certain information about a servant. The name of the servant should be put inside the quotation marks. In case you want to search by ID, put `id:` in front of the id of the servant (and put the whole thing in quotation marks!)
 ```
@@ -50,6 +79,9 @@ This command will give you the invite link that you can use to invite the bot to
 
 ### Daily Quest
 This command will give you the daily quest info of the current date in Japan
+
+### Daily Quest
+This command will give you the master quest info. I will try to update the data for this as soon as the info comes out.
 
 ### Time
 This will have 2 modes:

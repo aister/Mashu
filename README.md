@@ -80,7 +80,7 @@ This command will give you the invite link that you can use to invite the bot to
 ### Daily Quest
 This command will give you the daily quest info of the current date in Japan
 
-### Daily Quest
+### Master Quest
 This command will give you the master quest info. I will try to update the data for this as soon as the info comes out.
 
 ### Time

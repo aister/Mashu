@@ -2,7 +2,6 @@ request = require('request');
 module.exports = {
   exec: (client, message, content, args) => {
     if (args) {
-      console.log(args);
       if (args.startsWith('id:')) args = "http://aister.site90.com/api.php?mode=servants&c=dataID&query=" + encodeURI(args.slice(3));
       else args = "http://aister.site90.com/api.php?mode=servants&c=name&query=" + encodeURI(args);
       message.channel.startTyping();

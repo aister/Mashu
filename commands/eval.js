@@ -3,18 +3,19 @@ module.exports = {
   exec: (client, message, content, args) => {
     if (message.author.id == "184369428002111488") {
       if (args) {
-        command = (c) => {
+        commands = (c) => {
           cl = [];
           if (c) {
             if (client.commands[c]) return client.commands[c].count;
             else return "'" + c + "' is not a command";
           } else {
             for (c in client.commands) {
-              cl.push(c + ": " + client.commands[c].count);
+              if (client.commands[c].count) cl.push(c + ": " + client.commands[c].count);
             }
             return cl.join('\n');
           }
         }
+        command = commands();
         try {
           args = eval(args);
           if (typeof args == "object") args = util.inspect(args, {depth: 0});

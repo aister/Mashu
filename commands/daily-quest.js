@@ -2,28 +2,26 @@ request = require('request');
 module.exports = {
   exec: (client, message, content, args) => {
     message.send("Surely, senpai. Please wait while I'm looking for info");
-    request({ url: "http://aister.site90.com/api.php?mode=daily", json: true, followRedirect: false }, function(err, res, body) {
-      if (res.statusCode != 302 && body.item) {
-        body = body.item;
-        fields = [];
-        date = new Date();
-        date.setTime(Date.now() + 9 * 60 * 60 * 1000);
-
-        body.forEach(item => {
-          fields.push({
-            name: item.name,
-            value: "**Drop:** " + decodeURIComponent(escape(item.drop)) + "\n\n\u200b"
-          });
+    request({ url: "https://raw.githubusercontent.com/aister/nobuDB/master/daily.json", json: true }, function(err, res, body) {
+      fields = [];
+      date = new Date();
+      date.setTime(Date.now() + 9 * 60 * 60 * 1000);
+      body = body[date.getDay()];
+      body.forEach(item => {
+        fields.push({
+          name: item.name,
+          value: "**Drop:** " + decodeURIComponent(escape(item.drop)) + "\n\u200b"
         });
-        fields[fields.length - 1]["value"] = fields[fields.length - 1]["value"].slice(0, -2);
-        embed = {
-          title: "Daily Quest Info for " + date.toDateString(),
-          color: 0xff0000,
-          fields,
-          description: "\u200b"
-        }
-        message.channel.sendMessage('', {embed});
-      } else message.send("I'm sorry senpai, I couldn't find the info");
+      });
+      
+      fields[fields.length - 1]["value"] = fields[fields.length - 1]["value"].slice(0, -2);
+      embed = {
+        title: "Daily Quest Info for " + date.toDateString(),
+        color: 0xff0000,
+        fields,
+        description: "\u200b"
+      }
+      message.channel.sendMessage('', {embed});
     });
   }
 }

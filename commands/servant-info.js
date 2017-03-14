@@ -2,13 +2,21 @@ request = require('request');
 module.exports = {
   exec: (client, message, content, args) => {
     if (args) {
-      if (args.startsWith('id:')) args = "http://aister.site90.com/api.php?mode=servants&c=dataID&query=" + encodeURI(args.slice(3));
-      else args = "http://aister.site90.com/api.php?mode=servants&c=name&query=" + encodeURI(args);
       message.channel.startTyping();
       message.send("Surely, senpai, please wait a moment");
-      request({ url: args, json: true, followRedirect: false }, function(err, res, result) {
+      request({ url: "https://raw.githubusercontent.com/aister/nobuDB/master/fgo_main.json", json: true, followRedirect: false }, function(err, res, body) {
+        let result = "";
+        if (args.startsWith('id:')) result = {item: body[args.slice(3)]};
+        else {
+          for (let item in body) {
+            if (body[item].name.toLowerCase().includes(args.toLowerCase())) {
+              if (result) result.other.push(body[item].id);
+              else result = {item: body[item], other: []};
+            }
+          }
+        }
         message.channel.stopTyping();
-        if (res.statusCode != 302 && result.item) {
+        if (result) {
           body = result.item;
           attack = body.attacks.replace(/.{2}/g, function (match) {
             switch (match) {
@@ -20,11 +28,17 @@ module.exports = {
           field = [
             {
               name: "Rarity",
-              value: body.rarity
+              value: body.rarity,
+              inline: true
+            },
+            {
+              name: "Alignment",
+              value: body.alignment,
+              inline: true
             },
             {
               name: "Class",
-              value: body.class,
+              value: body.servantClass,
               inline: true
             },
             {
@@ -47,8 +61,12 @@ module.exports = {
               value: attack
             },
             {
+              name: "NP",
+              value: body.NP
+            },
+            {
               name: "Description",
-              value: body.description.replace(/<br>/g, '\n')
+              value: body.desc
             },
             {
               name: 'Note',
@@ -59,7 +77,7 @@ module.exports = {
             field[field.length - 1].value += "\n\u200b";
             field.push({
               name: "Other results (in servant ID)",
-              value: result.other + "\n\nUse `id:<servantID>` for precise search"
+              value: result.other.join(' | ') + "\n\nUse `id:<servantID>` for precise search"
             })
           }
           servant = {
@@ -72,6 +90,7 @@ module.exports = {
             },
             url: body.link
           }
+          console.log(servant);
           message.channel.sendMessage('', { embed: servant });
         } else message.send("I'm sorry, senpai, I couldn't find anything at all")
       });

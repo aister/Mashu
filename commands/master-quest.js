@@ -1,10 +1,10 @@
 var request = require('request');
 exports.exec = (client, message, content, args) => {
+  message.send("Surely senpai, please wait a moment");
   request({
-    url: 'http://aister.site90.com/api.php?mode=others&id=1',
+    url: 'https://raw.githubusercontent.com/aister/nobuDB/master/master.json',
     json: true
   }, function(err, res, body) {
-    if (body.item) message.send("Here is the Master mission for this week, senpai:\n\n" + body.item[0].value);
-    else message.send('Some error occured senpai, please try again later');
+    message.send("Here is the Master mission for this week, senpai:\n\n" + body.master);
   });
 }

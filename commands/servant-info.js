@@ -81,7 +81,7 @@ module.exports = {
             })
           }
           servant = {
-            title: body.name + ' (ID: ' + body.dataID + ')',
+            title: body.name + ' (ID: ' + body.id + ')',
             color: 0xff0000,
             description: "\u200b",
             fields: field,

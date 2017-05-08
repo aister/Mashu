@@ -51,7 +51,7 @@ client.load(client, () => {
     message.send = function (desc, emotion) {
       embed = client.embed;
       desc = desc.slice(0, 1).toUpperCase() + desc.slice(1);
-      embed.description = desc.replace(/senpai/gi, client.name + '-senpai');
+      embed.description = desc.replace(/senpai/gi, client.name + '-senpai').replace(/\[s]/gi, 'senpai');
       if (emotion) embed.thumbnail = { url: client.emote[emotion] };
       else {
         if (Math.random() > 0.5) embed.thumbnail = { url: client.emote["default"] };

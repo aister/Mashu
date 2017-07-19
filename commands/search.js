@@ -2,6 +2,7 @@ request = require('request');
 module.exports = {
   exec: (client, message, content, args) => {
     if (args) {
+      message.send("Surely, senpai, please wait a moment");
       reply = true;
       message.channel.startTyping();
       request('https://www.google.com/search?safe=active&q=' + encodeURI(args), function(err, res, body) {

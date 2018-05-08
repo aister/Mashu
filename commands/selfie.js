@@ -8,7 +8,7 @@ module.exports = {
     }, function (err, temp, body) {
       if (!err && body.length > 0 && body[0].file_url) {
         selfie = {
-          image: { url: "https://safebooru.donmai.us" + body[0].file_url },
+          image: { url: body[0].file_url },
           description: "Here you go senpai",
           thumbnail: { url: client.emote.embarassed },
           color: 0xff0000

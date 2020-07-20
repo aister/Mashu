@@ -94,9 +94,6 @@ Grab the updates from FGO English Twitter. At the moment, this will have 2 modes
 - Get pinned post: the message should have **pinned** or **pin** in the content. The bot will give you the link to the pinned post.
 - Get latest post: the message shouldn't have **pinned** or **pin** in the content. The bot will get the latest post, ignoring the pinned post if there's any.
 
-### Translate
-Translate from any language (that Google Translate supported) into English, the part that needs translating should be put inside the quotation marks.
-
 ### Stat
 Give a overview of the stat of the bot, how much memory it is using, and other stats as well.
 
